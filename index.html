@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Game Prizes Hub — Платформа → Игра → Приз → Официальная ссылка</title>
+  <meta name="description" content="Выбери платформу, игру и приз. Получи реальную официальную ссылку на покупку скинов, гемов, валюты и других предметов.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #08080c;
+      --bg2: #0e0e14;
+      --card: #16161f;
+      --card-hover: #1c1c28;
+      --border: #2a2a3a;
+      --accent: #8b5cf6;
+      --accent2: #a78bfa;
+      --accent-glow: rgba(139, 92, 246, 0.35);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --success: #34d399;
+      --radius: 16px;
+      --shadow: 0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139, 92, 246, 0.18), transparent),
+        radial-gradient(ellipse 60% 40% at 90% 10%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(168, 85, 247, 0.08), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem 3rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #c4b5fd, #a78bfa, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo span { font-size: 1.8rem; -webkit-text-fill-color: initial; }
+
+    header p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 1.8rem 0 2rem;
+      flex-wrap: wrap;
+    }
+
+    .step-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: all 0.25s;
+    }
+
+    .step-pill.active {
+      background: linear-gradient(135deg, #4c1d95, #5b21b6);
+      border-color: var(--accent);
+      color: white;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .step-pill.done {
+      background: #064e3b;
+      border-color: #059669;
+      color: #a7f3d0;
+    }
+
+    .step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .step-pill.active .step-num { background: rgba(255,255,255,0.25); }
+    .step-pill.done .step-num { background: #10b981; color: #064e3b; }
+
+    .section {
+      display: none;
+      animation: slideUp 0.35s ease;
+    }
+
+    .section.visible { display: block; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 0.9rem;
+    }
+
+    .grid.wide {
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1rem;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(139,92,246,0.08));
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      background: var(--card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.35), 0 0 0 1px rgba(139,92,246,0.2);
+    }
+
+    .card:hover::after { opacity: 1; }
+
+    .card.selected {
+      border-color: var(--accent);
+      background: linear-gradient(160deg, #1e1b4b 0%, #16161f 100%);
+      box-shadow: 0 0 0 2px var(--accent), 0 8px 24px var(--accent-glow);
+    }
+
+    .card .icon {
+      font-size: 2.4rem;
+      margin-bottom: 0.55rem;
+      display: block;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+    }
+
+    .card .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .card .sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    .game-card {
+      text-align: left;
+      padding: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .game-card .top {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .game-card .icon { font-size: 1.9rem; margin: 0; }
+
+    .game-card .name { font-weight: 700; font-size: 1.05rem; }
+
+    .game-card .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.3rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(139,92,246,0.15);
+      color: #c4b5fd;
+      font-weight: 500;
+    }
+
+    .tag.free { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .tag.paid { background: rgba(251,191,36,0.15); color: #fcd34d; }
+
+    .prize-card {
+      text-align: left;
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .prize-card .prize-name {
+      font-weight: 650;
+      font-size: 1.02rem;
+    }
+
+    .prize-card .prize-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      flex-grow: 1;
+    }
+
+    .prize-card .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .prize-card .price {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    .prize-card .btn-get {
+      margin-top: 0.3rem;
+      width: 100%;
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.7rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .search-wrap input::placeholder { color: #64748b; }
+
+    .search-icon {
+      position: absolute;
+      left: 0.95rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.45);
+    }
+
+    .btn:active { transform: translateY(0); }
+
+    .btn.secondary {
+      background: #1e293b;
+      box-shadow: none;
+      border: 1px solid var(--border);
+    }
+
+    .btn.secondary:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      box-shadow: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .btn.ghost:hover {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(139,92,246,0.08);
+    }
+
+    .result {
+      background: linear-gradient(160deg, #1e1b4b 0%, #0f172a 100%);
+      border: 1px solid #4c1d95;
+      border-radius: 20px;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(139,92,246,0.15);
+    }
+
+    .result h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+      color: #e9d5ff;
+    }
+
+    .result .path {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .link-box {
+      background: #0a0a0f;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      word-break: break-all;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 0.88rem;
+      color: #a5b4fc;
+      margin-bottom: 1.3rem;
+      text-align: left;
+    }
+
+    .result-actions {
+      display: flex;
+      gap: 0.7rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .result-actions .btn { min-width: 150px; }
+
+    .note {
+      margin-top: 1.3rem;
+      font-size: 0.78rem;
+      color: #64748b;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .nav-row {
+      display: flex;
+      gap: 0.7rem;
+      margin-top: 1.6rem;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+      color: #64748b;
+      font-size: 0.78rem;
+    }
+
+    footer a { color: #a78bfa; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 560px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .grid.wide { grid-template-columns: 1fr; }
+      .section-title { font-size: 1.2rem; }
+      header { padding-top: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo"><span>🎁</span> Game Prizes Hub</div>
+      <p>Платформа → Игра → Приз → Реальная официальная ссылка</p>
+    </header>
+
+    <div class="steps" id="steps">
+      <div class="step-pill active" data-step="1"><span class="step-num">1</span> Платформа</div>
+      <div class="step-pill" data-step="2"><span class="step-num">2</span> Игра</div>
+      <div class="step-pill" data-step="3"><span class="step-num">3</span> Приз</div>
+      <div class="step-pill" data-step="4"><span class="step-num">4</span> Ссылка</div>
+    </div>
+
+    <section class="section visible" id="step1">
+      <h2 class="section-title">На чём ты играешь?</h2>
+      <p class="section-sub">Выбери устройство — это поможет подобрать правильные ссылки</p>
+      <div class="grid" id="platformsGrid"></div>
+    </section>
+
+    <section class="section" id="step2">
+      <h2 class="section-title">Выбери игру</h2>
+      <p class="section-sub">Есть как бесплатные, так и платные предметы</p>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="gameSearch" placeholder="Найти игру..." autocomplete="off">
+      </div>
+      <div class="grid wide" id="gamesGrid"></div>
+      <div class="nav-row">
+        <button class="btn ghost" id="backToPlatform">← Назад</button>
+      </div>
+    </section>
+
+    <section class="section" id="step3">
+      <h2 class="section-title" id="prizeTitle">Выбери приз / предмет</h2>
+      <p class="section-sub">Можно выбрать из предложенных или найти свой через поиск</p>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="prizeSearch" placeholder="Найти скин, гемы, валюту..." autocomplete="off">
+      </div>
+      <div class="grid wide" id="prizesGrid"></div>
+      <div class="nav-row">
+        <button class="btn ghost" id="backToGame">← Назад к играм</button>
+      </div>
+    </section>
+
+    <section class="section" id="step4">
+      <div class="result">
+        <h3 id="resultTitle">Ссылка готова</h3>
+        <p class="path" id="resultPath"></p>
+        <div class="link-box" id="linkBox"></div>
+        <div class="result-actions">
+          <a class="btn" id="openBtn" href="#" target="_blank" rel="noopener">Открыть ссылку →</a>
+          <button class="btn secondary" id="copyBtn">Скопировать</button>
+        </div>
+        <p class="note">
+          Это официальная страница магазина или покупки. Все покупки происходят только через легальные каналы издателя. Никаких «бесплатных генераторов».
+        </p>
+      </div>
+      <div class="nav-row" style="justify-content:center; margin-top:1.5rem;">
+        <button class="btn ghost" id="restartBtn">Начать заново</button>
+        <button class="btn ghost" id="backToPrize">← Выбрать другой приз</button>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    Game Prizes Hub · Только официальные магазины ·
+    <a href="https://github.com/superyaroslav8-arch/game-prizes-hub" target="_blank">GitHub</a>
+  </footer>
+
+  <script>
+    const platforms = [
+      { id: 'pc', name: 'PC', icon: '🖥️', sub: 'Windows / Steam / Epic' },
+      { id: 'console', name: 'Приставка', icon: '🎮', sub: 'PS / Xbox / Switch' },
+      { id: 'phone', name: 'Телефон', icon: '📱', sub: 'iOS / Android' },
+      { id: 'tablet', name: 'Планшет', icon: '📲', sub: 'iPad / Android' },
+      { id: 'mini', name: 'Мини-приставка', icon: '🕹️', sub: 'Steam Deck и др.' },
+      { id: 'any', name: 'Любое', icon: '✨', sub: 'Покажи всё' }
+    ];
+
+    const games = [
+      {
+        id: 'brawlstars',
+        name: 'Brawl Stars',
+        icon: '⭐',
+        tags: ['free', 'paid'],
+        platforms: ['phone', 'tablet', 'any'],
+        prizes: [
+          { name: 'Гемы', desc: 'Основная валюта. Покупка через App Store / Google Play или Supercell Store.', price: 'в приложении', link: 'https://supercell.com/en/games/brawlstars/', platforms: ['phone','tablet','any'] },
+          { name: 'Brawl Pass / Brawl Pass Plus', desc: 'Сезонный пропуск с наградами, скинами и бонусами.', price: 'в приложении', link: 'https://brawlstars.supercell.com/', platforms: ['phone','tablet','any'] },
+          { name: 'Скины бойцов', desc: 'Официальные скины покупаются только внутри игры.', price: 'гемы', link: 'https://brawlstars.supercell.com/', platforms: ['phone','tablet','any'] },
+          { name: 'Supercell ID', desc: 'Управление аккаунтом и покупками.', price: 'бесплатно', link: 'https://id.supercell.com/', platforms: ['phone','tablet','any'] }
+        ]
+      },
+      {
+        id: 'gta5',
+        name: 'GTA 5 / GTA Online',
+        icon: '🚗',
+        tags: ['paid'],
+        platforms: ['pc', 'console', 'mini', 'any'],
+        prizes: [
+          { name: 'Shark Cash Cards', desc: 'Официальные карты с деньгами для GTA Online (Rockstar).', price: 'от $4.99', link: 'https://www.rockstargames.com/gta-v/shark-cash-cards', platforms: ['pc','console','mini','any'] },
+          { name: 'GTA V — Steam', desc: 'Купить игру и DLC в Steam.', price: 'смотрите', link: 'https://store.steampowered.com/app/271590/Grand_Theft_Auto_V/', platforms: ['pc','mini','any'] },
+          { name: 'Rockstar Store / Launcher', desc: 'Официальный магазин Rockstar.', price: '—', link: 'https://www.rockstargames.com/gta-v', platforms: ['pc','console','any'] },
+          { name: 'GTA Online (PS / Xbox)', desc: 'Страница игры на консолях.', price: 'смотрите', link: 'https://www.rockstargames.com/gta-v', platforms: ['console','any'] }
+        ]
+      },
+      {
+        id: 'gta4',
+        name: 'GTA 4',
+        icon: '🏙️',
+        tags: ['paid'],
+        platforms: ['pc', 'any'],
+        prizes: [
+          { name: 'GTA IV Complete Edition — Steam', desc: 'Полная версия с дополнениями.', price: 'смотрите', link: 'https://store.steampowered.com/app/12210/Grand_Theft_Auto_IV_The_Complete_Edition/', platforms: ['pc','any'] },
+          { name: 'Официальная страница Rockstar', desc: 'Информация и покупка.', price: '—', link: 'https://www.rockstargames.com/games/IV', platforms: ['pc','any'] }
+        ]
+      },
+      {
+        id: 'roblox',
+        name: 'Roblox',
+        icon: '🧱',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'phone', 'tablet', 'console', 'any'],
+        prizes: [
+          { name: 'Robux', desc: 'Официальная валюта. Покупка на сайте или в приложении.', price: 'от $0.99', link: 'https://www.roblox.com/upgrades/robux', platforms: ['pc','phone','tablet','console','any'] },
+          { name: 'Каталог аватара', desc: 'Одежда, аксессуары, скины.', price: 'Robux', link: 'https://www.roblox.com/catalog', platforms: ['pc','phone','tablet','any'] },
+          { name: 'Premium', desc: 'Подписка с бонусами.', price: 'смотрите', link: 'https://www.roblox.com/premium/membership', platforms: ['pc','phone','tablet','any'] }
+        ]
+      },
+      {
+        id: 'amongus',
+        name: 'Among Us',
+        icon: '🚀',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'phone', 'tablet', 'console', 'any'],
+        prizes: [
+          { name: 'Косметика / Pets / Skins', desc: 'Покупки внутри игры (Steam, мобильные магазины).', price: 'в игре', link: 'https://store.steampowered.com/app/945360/Among_Us/', platforms: ['pc','phone','tablet','console','any'] },
+          { name: 'Официальный сайт InnerSloth', desc: 'Информация об игре.', price: '—', link: 'https://www.innersloth.com/games/among-us/', platforms: ['pc','phone','tablet','any'] }
+        ]
+      },
+      {
+        id: 'minecraft',
+        name: 'Minecraft',
+        icon: '⛏️',
+        tags: ['paid'],
+        platforms: ['pc', 'phone', 'tablet', 'console', 'any'],
+        prizes: [
+          { name: 'Minecraft Marketplace', desc: 'Скины, миры, аддоны (Bedrock).', price: 'в игре', link: 'https://www.minecraft.net/en-us/marketplace', platforms: ['pc','phone','tablet','console','any'] },
+          { name: 'Купить Minecraft', desc: 'Официальный магазин Java / Bedrock.', price: 'смотрите', link: 'https://www.minecraft.net/en-us/store', platforms: ['pc','phone','tablet','console','any'] },
+          { name: 'Realms', desc: 'Официальные сервера Minecraft.', price: 'подписка', link: 'https://www.minecraft.net/en-us/realms', platforms: ['pc','phone','tablet','console','any'] }
+        ]
+      },
+      {
+        id: 'fortnite',
+        name: 'Fortnite',
+        icon: '🏗️',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'console', 'phone', 'tablet', 'mini', 'any'],
+        prizes: [
+          { name: 'V-Bucks', desc: 'Валюта Fortnite. Покупка в Epic Games Store / консолях / мобильных.', price: 'в игре', link: 'https://store.epicgames.com/en-US/p/fortnite', platforms: ['pc','console','phone','tablet','mini','any'] },
+          { name: 'Battle Pass / Скины', desc: 'Сезонный пропуск и косметика.', price: 'V-Bucks', link: 'https://www.fortnite.com/', platforms: ['pc','console','phone','tablet','any'] },
+          { name: 'Официальный сайт', desc: 'Новости, загрузка, магазин.', price: '—', link: 'https://www.fortnite.com/', platforms: ['pc','console','phone','tablet','any'] }
+        ]
+      },
+      {
+        id: 'valorant',
+        name: 'Valorant',
+        icon: '🔫',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'console', 'any'],
+        prizes: [
+          { name: 'VP (Valorant Points)', desc: 'Валюта для скинов и Battle Pass.', price: 'в клиенте', link: 'https://playvalorant.com/', platforms: ['pc','console','any'] },
+          { name: 'Скины оружия / Battle Pass', desc: 'Покупка только через официальный клиент Riot.', price: 'VP', link: 'https://playvalorant.com/en-us/', platforms: ['pc','console','any'] }
+        ]
+      },
+      {
+        id: 'genshin',
+        name: 'Genshin Impact',
+        icon: '⚔️',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'phone', 'tablet', 'console', 'any'],
+        prizes: [
+          { name: 'Genesis Crystals / Welkin', desc: 'Официальные покупки через приложение или сайт Hoyoverse.', price: 'в игре', link: 'https://genshin.hoyoverse.com/', platforms: ['pc','phone','tablet','console','any'] },
+          { name: 'Официальный сайт', desc: 'Новости и магазин.', price: '—', link: 'https://genshin.hoyoverse.com/en/home', platforms: ['pc','phone','tablet','any'] }
+        ]
+      },
+      {
+        id: 'pubg',
+        name: 'PUBG / PUBG Mobile',
+        icon: '🪖',
+        tags: ['free', 'paid'],
+        platforms: ['pc', 'phone', 'tablet', 'console', 'any'],
+        prizes: [
+          { name: 'UC / G-Coins', desc: 'Валюта PUBG Mobile и PC. Официальные магазины.', price: 'в игре', link: 'https://www.pubgmobile.com/', platforms: ['phone','tablet','any'] },
+          { name: 'PUBG (Steam)', desc: 'Страница игры и DLC.', price: 'смотрите', link: 'https://store.steampowered.com/app/578080/PUBG_BATTLEGROUNDS/', platforms: ['pc','console','any'] }
+        ]
+      }
+    ];
+
+    let state = { platform: null, game: null, prize: null };
+
+    const $ = id => document.getElementById(id);
+    const steps = document.querySelectorAll('.step-pill');
+
+    function setStep(n) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+      $('step' + n).classList.add('visible');
+      steps.forEach(p => {
+        const s = +p.dataset.step;
+        p.classList.remove('active', 'done');
+        if (s === n) p.classList.add('active');
+        else if (s < n) p.classList.add('done');
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderPlatforms() {
+      const grid = $('platformsGrid');
+      grid.innerHTML = '';
+      platforms.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card' + (state.platform?.id === p.id ? ' selected' : '');
+        card.innerHTML = `<span class="icon">${p.icon}</span><div class="label">${p.name}</div><div class="sub">${p.sub}</div>`;
+        card.onclick = () => {
+          state.platform = p;
+          state.game = null;
+          state.prize = null;
+          renderGames();
+          setStep(2);
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function renderGames(filter = '') {
+      const grid = $('gamesGrid');
+      grid.innerHTML = '';
+      const q = filter.toLowerCase().trim();
+      const list = games.filter(g => {
+        const matchPlatform = state.platform.id === 'any' || g.platforms.includes(state.platform.id) || g.platforms.includes('any');
+        const matchSearch = !q || g.name.toLowerCase().includes(q);
+        return matchPlatform && matchSearch;
+      });
+
+      if (!list.length) {
+        grid.innerHTML = '<div class="empty">Игры не найдены. Попробуй другую платформу или поиск.</div>';
+        return;
+      }
+
+      list.forEach(g => {
+        const card = document.createElement('div');
+        card.className = 'card game-card' + (state.game?.id === g.id ? ' selected' : '');
+        const tagsHtml = g.tags.map(t => `<span class="tag ${t}">${t === 'free' ? 'бесплатные' : 'платные'}</span>`).join('');
+        card.innerHTML = `
+          <div class="top">
+            <span class="icon">${g.icon}</span>
+            <div class="name">${g.name}</div>
+          </div>
+          <div class="tags">${tagsHtml}</div>
+        `;
+        card.onclick = () => {
+          state.game = g;
+          state.prize = null;
+          renderPrizes();
+          setStep(3);
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function renderPrizes(filter = '') {
+      const grid = $('prizesGrid');
+      $('prizeTitle').textContent = `${state.game.icon} ${state.game.name} — выбери приз`;
+      grid.innerHTML = '';
+      const q = filter.toLowerCase().trim();
+      const list = state.game.prizes.filter(p => {
+        const matchPlatform = state.platform.id === 'any' || p.platforms.includes(state.platform.id) || p.platforms.includes('any');
+        const matchSearch = !q || p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q);
+        return matchPlatform && matchSearch;
+      });
+
+      if (!list.length) {
+        grid.innerHTML = '<div class="empty">Призы не найдены. Измени поиск или выбери другую игру.</div>';
+        return;
+      }
+
+      list.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card prize-card';
+        card.innerHTML = `
+          <div class="prize-name">${p.name}</div>
+          <div class="prize-desc">${p.desc}</div>
+          <div class="meta">
+            <span class="price">${p.price}</span>
+          </div>
+          <button class="btn btn-get">Получить ссылку</button>
+        `;
+        card.querySelector('.btn-get').onclick = (e) => {
+          e.stopPropagation();
+          state.prize = p;
+          showResult();
+        };
+        card.onclick = () => {
+          state.prize = p;
+          showResult();
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function showResult() {
+      $('resultTitle').textContent = state.prize.name;
+      $('resultPath').textContent = `${state.platform.name} → ${state.game.name} → ${state.prize.name}`;
+      $('linkBox').textContent = state.prize.link;
+      $('openBtn').href = state.prize.link;
+      setStep(4);
+    }
+
+    $('gameSearch').addEventListener('input', e => renderGames(e.target.value));
+    $('prizeSearch').addEventListener('input', e => renderPrizes(e.target.value));
+
+    $('backToPlatform').onclick = () => {
+      state.game = null;
+      state.prize = null;
+      setStep(1);
+    };
+
+    $('backToGame').onclick = () => {
+      state.prize = null;
+      setStep(2);
+    };
+
+    $('backToPrize').onclick = () => setStep(3);
+
+    $('restartBtn').onclick = () => {
+      state = { platform: null, game: null, prize: null };
+      $('gameSearch').value = '';
+      $('prizeSearch').value = '';
+      renderPlatforms();
+      setStep(1);
+    };
+
+    $('copyBtn').onclick = async () => {
+      try {
+        await navigator.clipboard.writeText(state.prize.link);
+        $('copyBtn').textContent = 'Скопировано ✓';
+        setTimeout(() => { $('copyBtn').textContent = 'Скопировать'; }, 2000);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = state.prize.link;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        $('copyBtn').textContent = 'Скопировано ✓';
+        setTimeout(() => { $('copyBtn').textContent = 'Скопировать'; }, 2000);
+      }
+    };
+
+    renderPlatforms();
+  </script>
+</body>
+</html>
